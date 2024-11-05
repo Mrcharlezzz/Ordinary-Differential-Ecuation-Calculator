@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_ode(ode, x_values, y_values, x_0, y_0):
+def plot_ode(ode, x_interval, y_interval, x_values, y_values, x_0, y_0):
     
     # Create a grid of points in the x, y plane
-    x_vals = np.linspace(-100, 100, 30)
-    y_vals = np.linspace(-100, 100, 30)
+    x_vals = np.linspace(x_interval[0], x_interval[1], 30)
+    y_vals = np.linspace(y_interval[0], y_interval[1], 30)
     X, Y = np.meshgrid(x_vals, y_vals)
 
     # Calculate the direction field
@@ -37,8 +37,8 @@ def plot_ode(ode, x_values, y_values, x_0, y_0):
 
     # Set grid and limits
     ax.grid(False)
-    ax.set_xlim(-100, 100)
-    ax.set_ylim(-100, 100)
+    ax.set_xlim(x_interval[0], x_interval[1])
+    ax.set_ylim(y_interval[0], y_interval[1])
 
     # Show the legend and plot
     ax.legend()
