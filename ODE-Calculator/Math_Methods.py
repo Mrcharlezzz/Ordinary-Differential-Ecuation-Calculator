@@ -17,26 +17,23 @@ class MathMethods:
 
     def __euler_method(self, x0, y0, h, n):
         values = [(x0, y0)]
-        step = h
 
         for i in range(n):
-            r_coordinate = values[len(values) - 1]
             l_coordinate = values[0]
-
-            x_prev = l_coordinate[0] - step
-            y_prev = l_coordinate[1] - step * self.__get_eval(l_coordinate)
-
-            x_next = r_coordinate[0] + step
-            y_next = r_coordinate[1] + step * self.__get_eval(r_coordinate)
-
+            x_prev = l_coordinate[0] - h
+            y_prev = l_coordinate[1] - h * self.__get_eval(l_coordinate)
             values.insert(0,(x_prev, y_prev))
+
+            r_coordinate = values[len(values) - 1]
+            x_next = r_coordinate[0] + h
+            y_next = r_coordinate[1] + h * self.__get_eval(r_coordinate)
             values.append((x_next, y_next))
 
         return values
 
     def __get_solution(self, t):
         f = self.values
-        for i in range(len(self.values) - 1):
+        for i in range(len(f) - 1):
             x1 = f[i][0]
             y1 = f[i][1]
             x2 = f[i + 1][0]
