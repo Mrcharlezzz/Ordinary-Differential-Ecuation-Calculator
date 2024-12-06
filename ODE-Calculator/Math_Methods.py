@@ -1,11 +1,11 @@
 import sympy as sp
 
 class MathMethods:
-    def __init__(self, x0, y0, f, h, t):
+    def __init__(self, x0, y0, f, h, x1):
         self.n = int(1e5)
         self.f_lambda = sp.lambdify((sp.symbols('x'), sp.symbols('y')), f)
         self.values = self.__euler_method(x0, y0, h)
-        self.ode_evaluation = (t, self.__get_solution(t))
+        self.ode_evaluation = (x1, self.__get_solution(x1))
 
     def get_values(self):
         return self.values[0], self.values[1]
