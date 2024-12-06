@@ -1,38 +1,44 @@
 import sympy as sp
 
 class MathMethods:
-    def __init__(self, x0, y0, f, h, n, s_x, s_y, t):
-        self.f_lambda = sp.lambdify((sp.symbols(s_x), sp.symbols(s_y)), f)
-        self.values = self.__euler_method(x0, y0, h, n)
+    def __init__(self, x0, y0, f, h, t):
+        self.n = int(1e5)
+        self.f_lambda = sp.lambdify((sp.symbols('x'), sp.symbols('y')), f)
+        self.values = self.__euler_method(x0, y0, h)
         self.ode_evaluation = (t, self.__get_solution(t))
 
     def get_values(self):
-        return self.values
+        return self.values[0], self.values[1]
 
-    def evaluation(self):
+    def get_evaluation(self):
         return self.ode_evaluation
 
-    def __get_eval(self, coordinate):
+    def __get_lambda_eval(self, coordinate):
         return self.f_lambda(coordinate[0], coordinate[1])
 
-    def __euler_method(self, x0, y0, h, n):
+    def __euler_method(self, x0, y0, h):
         values = [(x0, y0)]
 
-        for i in range(n):
+        for i in range(self.n):
             l_coordinate = values[0]
             x_prev = l_coordinate[0] - h
-            y_prev = l_coordinate[1] - h * self.__get_eval(l_coordinate)
+            y_prev = l_coordinate[1] - h * self.__get_lambda_eval(l_coordinate)
             values.insert(0,(x_prev, y_prev))
 
             r_coordinate = values[len(values) - 1]
             x_next = r_coordinate[0] + h
-            y_next = r_coordinate[1] + h * self.__get_eval(r_coordinate)
+            y_next = r_coordinate[1] + h * self.__get_lambda_eval(r_coordinate)
             values.append((x_next, y_next))
 
         return values
 
     def __get_solution(self, t):
         f = self.values
+        rg = (f[0][0], f[0][len(f) - 1])
+
+        if t < rg[0] or t > rg[1]:
+            return None
+
         for i in range(len(f) - 1):
             x1 = f[i][0]
             y1 = f[i][1]
