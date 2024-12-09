@@ -34,12 +34,12 @@ class MathMethods:
 
     def __get_solution(self, t):
         f = self.values
-        rg = (f[0][0], f[0][len(f) - 1])
+        rg = (f[0][0], f[0][len(f[0]) - 1])
 
         if t < rg[0] or t > rg[1]:
             return None
 
-        for i in range(len(f) - 1):
+        for i in range(len(f[0]) - 1):
             x1 = f[i][0]
             y1 = f[i][1]
             x2 = f[i + 1][0]
