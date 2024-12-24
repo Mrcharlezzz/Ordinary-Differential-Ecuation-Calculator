@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7cf41e4c-c704-4e1b-963c-622f721bc0dc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ODE-Calculator/TestFile.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ODE-Calculator/Math_Methods.py" beforeDir="false" afterPath="$PROJECT_DIR$/ODE-Calculator/Math_Methods.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
