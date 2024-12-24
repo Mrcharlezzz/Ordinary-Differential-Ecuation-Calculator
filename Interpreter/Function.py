@@ -5,9 +5,12 @@ import re
 from math import sin, cos, tan, log, sqrt,pi
 
 
-def differential(A): #This method receives a string, converts it into a mathematical expression, clears the variable and returns the cleared function
+def function(A): #This method receives a string, converts it into a mathematical expression, clears the variable and returns the cleared function
     try:
-        A = A.replace('dy/dx', 'Diff')     # Replace dy/dx with Diff(remplaza dy/dx por Diff)
+        A = A.replace('y', 'Diff')     # Replace y with Diff(remplaza y por Diff)
+        
+        if "dy/dx" in A :
+          return None
         
         if re.search(r'\d+e', A) or re.search(r'e\d+', A) or re.search(r'\d+pi', A) or re.search(r'pi\d+', A): 
             return None                                 #Look if there is any number before or after pi or e
@@ -33,24 +36,25 @@ def differential(A): #This method receives a string, converts it into a mathemat
         
         x, y = sympy.symbols('x y')  # Define symbolic variables x and y(Define las variables simbólicas x e y)
         
-        def f(x_val, y_val):
-            return float(resultado.subs([(x, x_val), (y, y_val)]))  # Evaluate expression with numerical values(sustituye x e y por los valores de x_val e y_val)
+        def f(x_val):
+            return float(resultado.subs(x, x_val))  # Evaluate expression with numerical values(sustituye x e y por los valores de x_val e y_val)
         return f
+    
     except:  #if there is an error return none
         return None
 
 # #Casos Pruebas
-resultado1 = differential("dy/dx/6 +9*y =8*y")
-print("Resultado1:", resultado1)
+resultado1 = function("y/6 + x =2")
+print("Resultado1:", resultado1(11))
 print(type(resultado1))
 
 
-resultado2 = differential("dy/dx = 7+x")
-print("Resultado2:", resultado2)
+resultado2 = function("y = 7+x")
+print("Resultado2:", resultado2(3))
 
-# resultado3 = differential("dy/dx +5 + 2*x = 5*y")
+# resultado3 = function("dy/dx +5 + 2*x = 5*y")
 # print("Resultado3:", resultado3)
 
-resultado4 = differential("dy/dx - 56*e =0")
-print("Resultado4:", resultado4(1,0))
+resultado4 = function("y - 56*e =0")
+print("Resultado4:", resultado4(0))
 print("Resultado" ,resultado4)
