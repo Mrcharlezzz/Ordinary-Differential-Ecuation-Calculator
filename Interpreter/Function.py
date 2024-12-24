@@ -9,7 +9,7 @@ def function(A): #This method receives a string, converts it into a mathematical
     try:
         A = A.replace('y', 'Diff')     # Replace y with Diff(remplaza y por Diff)
         
-        if "dy/dx" in A :
+        if "dy/dx" in A :   #check if it is an ODE
           return None
         
         if re.search(r'\d+e', A) or re.search(r'e\d+', A) or re.search(r'\d+pi', A) or re.search(r'pi\d+', A): 
