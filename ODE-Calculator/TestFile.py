@@ -3,14 +3,14 @@ import Math_Methods
 
 x, y = sp.symbols('x y')
 
-function = x + y
+function = sp.sqrt(x**2) + y
 
 f_lambda = sp.lambdify((x, y), function, 'numpy')
 
-calculator = Math_Methods.MathMethods(0, 0, f_lambda, .01, 1)
+calculator = Math_Methods.MathMethods(1, 1, f_lambda, .01, 3)
 
 x_vals, y_vals = calculator.get_values()
 
-print("y(1) = ", calculator.get_evaluation())
+print("y(3) = ", calculator.get_evaluation())
 
 print("(x) Values: ", x_vals, "\n(y) Values: ", y_vals)

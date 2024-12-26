@@ -3,7 +3,7 @@ class MathMethods:
         self.__n = int(1e4)
         self.__f_lambda = f
         self.__values = self.__euler_method(x0, y0, h)
-        self.__ode_evaluation = (x1, self.__get_solution(x1))
+        self.__ode_evaluation = (x1, float(self.__get_solution(x1)))
 
     # Method to get Euler's method values...
     def get_values(self):
@@ -27,12 +27,12 @@ class MathMethods:
             l_coordinate = values[0]
             x_prev = l_coordinate[0] - h
             y_prev = l_coordinate[1] - h * self.__get_lambda_eval(l_coordinate)
-            values.insert(0,(x_prev, y_prev))
+            values.insert(0,(x_prev, float(y_prev)))
 
             r_coordinate = values[len(values) - 1]
             x_next = r_coordinate[0] + h
             y_next = r_coordinate[1] + h * self.__get_lambda_eval(r_coordinate)
-            values.append((x_next, y_next))
+            values.append((x_next, float(y_next)))
 
         return values
 
