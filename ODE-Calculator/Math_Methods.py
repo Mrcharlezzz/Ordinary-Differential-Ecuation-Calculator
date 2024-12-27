@@ -1,4 +1,5 @@
-import math
+import numpy as np
+import warnings
 
 class MathMethods:
     def __init__(self, x0, y0, f, h, x1):
@@ -21,7 +22,12 @@ class MathMethods:
         return self.__ode_evaluation
 
     def __get_lambda_eval(self, coordinate):
-        return self.__f_lambda(coordinate[0], coordinate[1])
+        try:
+            with warnings.catch_warnings():
+                warnings.filterwarnings('error', category=RuntimeWarning)
+                return float(self.__f_lambda(coordinate[0], coordinate[1]))
+        except (ValueError, RuntimeWarning):
+            return np.nan
 
     def __euler_method(self, x0, y0, h):
         isnan = (False, False)
@@ -31,19 +37,19 @@ class MathMethods:
                 l_coordinate = values[0]
                 x_prev = l_coordinate[0] - h
                 y_prev = l_coordinate[1] - h * self.__get_lambda_eval(l_coordinate)
-                if math.isnan(y_prev):
+                if np.isnan(y_prev):
                     isnan = (True, isnan[1])
                 else:
-                    values.insert(0,(x_prev, float(y_prev)))
+                    values.insert(0,(x_prev, y_prev))
 
             if not isnan[1]:
                 r_coordinate = values[len(values) - 1]
                 x_next = r_coordinate[0] + h
                 y_next = r_coordinate[1] + h * self.__get_lambda_eval(r_coordinate)
-                if math.isnan(y_next):
+                if np.isnan(y_next):
                     isnan = (isnan[0], True)
                 else:
-                    values.append((x_next, float(y_next)))
+                    values.append((x_next, y_next))
 
         return values
 
