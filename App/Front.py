@@ -1,16 +1,12 @@
 import tkinter as tk
-from tkinter import ttk
 import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from Interpreter.Differential import differential
-# from Interpreter.Simple_Calculator import simple
-# from Interpreter.Variable_Unknown import incognita
-from ODE_Calculator.Math_Methods import MathMethods
-from ODE_Graph_Plotter.ODE_Graf import plot_ode
-
+from App.Interpreter.Differential import differential
+from App.Math_Methods import MathMethods
+from App.ODE_Graf import plot_ode
 
 def create_calculator():
     root = tk.Tk()
@@ -116,10 +112,10 @@ def create_calculator():
     params_frame.pack(pady=10)
 
     params = [("Xo:", "x0"), ("Yo:", "y0"), 
-             ("h:", "h"), ("X:", "calc_x"),
-             ("Interval_I:", "interval_I"),
-             ("Interval_F:", "interval_F"),
-             ("Sol.exact:", "sol")]
+             ("Step: h =", "h"), ("Eval. x =", "calc_x"),
+             ("Plot Init:", "interval_I"),
+             ("Plot End:", "interval_F"),
+             ("Exact Sol:", "sol")]
     
     entries = {}
     for label_text, key in params:
@@ -194,9 +190,8 @@ def create_calculator():
         try:
             calculator = MathMethods(x0, y0, equation, h, x1)
             print("MathMethods created successfully")
-            solution = (0,0)
             solution = calculator.get_evaluation()
-            solution_label.config(text=f"Solución: {solution}")
+            solution_label.config(text=f"Solución: y({solution[0]}) = {solution[1]}")
         except Exception as e:
             print("Error in MathMethods:", str(e))
             solution_label.config(text=f"Error in calculation: {str(e)}")
@@ -251,8 +246,8 @@ def create_calculator():
         x1 = float(entries["calc_x"].get())
         try:
             calculator = MathMethods(x0, y0, equation, h, x1)
-            error = calculator.get_error_analysis()  # You'll need to implement this method in MathMethods
-            solution_label.config(text=f"Error Analysis:\nLocal Error: {error['local']}\nGlobal Error: {error['global']}")
+            numeric_error = calculator.get_error_analysis()  # You'll need to implement this method in MathMethods!!!!
+            solution_label.config(text=f"Error Analysis:\nLocal Error: {numeric_error['local']}\nGlobal Error: {numeric_error['global']}")
         except Exception as e:
             solution_label.config(text=f"Error in analysis: {str(e)}")
             
@@ -283,6 +278,3 @@ def create_calculator():
     
 
     root.mainloop()
-
-if __name__ == "__main__":
-    create_calculator()

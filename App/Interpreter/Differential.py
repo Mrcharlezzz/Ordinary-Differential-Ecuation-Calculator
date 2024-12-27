@@ -1,8 +1,6 @@
 import sympy
-import numpy 
 import math
 import re
-from math import sin, cos, tan, log, sqrt,pi
 
 
 def differential(A): #This method receives a string, converts it into a mathematical expression, clears the variable and returns the cleared function
@@ -38,19 +36,3 @@ def differential(A): #This method receives a string, converts it into a mathemat
         return f_lambda
     except:  #if there is an error return none
         return None
-
-# #Casos Pruebas
-resultado1 = differential("dy/dx/6 +9*y =8*y")
-print("Resultado1:", resultado1)
-print(type(resultado1))
-
-
-resultado2 = differential("dy/dx = 7+x")
-print("Resultado2:", resultado2)
-
-# resultado3 = differential("dy/dx +5 + 2*x = 5*y")
-# print("Resultado3:", resultado3)
-
-resultado4 = differential("dy/dx - 56*e =0")
-print("Resultado4:", resultado4(1,0))
-print("Resultado" ,resultado4)

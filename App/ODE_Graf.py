@@ -1,7 +1,5 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
-
 
 def plot_ode(ode, x_interval, y_interval, x_values, y_values, x_0, y_0):
 

@@ -1,9 +1,10 @@
+import math
 import sympy as sp
-import Math_Methods
+from App import Math_Methods
 
 x, y = sp.symbols('x y')
 
-function = sp.sqrt(y)
+function = math.e**x
 
 f_lambda = sp.lambdify((x, y), function, 'numpy')
 
@@ -14,4 +15,4 @@ x_vals, y_vals = calculator.get_values()
 #print("y(3) = ", calculator.get_evaluation())
 
 #print("(x) Values: ", x_vals)
-#print("(y) Values: ", y_vals)
+print("(y) Values: ", y_vals)

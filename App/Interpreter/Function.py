@@ -1,9 +1,6 @@
 import sympy
-import numpy 
 import math
 import re
-from math import sin, cos, tan, log, sqrt,pi
-
 
 def function(A): #This method receives a string, converts it into a mathematical expression, clears the variable and returns the cleared function
     try:
@@ -42,19 +39,3 @@ def function(A): #This method receives a string, converts it into a mathematical
     
     except:  #if there is an error return none
         return None
-
-# #Casos Pruebas
-resultado1 = function("y/6 + x =2")
-print("Resultado1:", resultado1(11))
-print(type(resultado1))
-
-
-resultado2 = function("y = 7+x")
-print("Resultado2:", resultado2(3))
-
-# resultado3 = function("dy/dx +5 + 2*x = 5*y")
-# print("Resultado3:", resultado3)
-
-resultado4 = function("y - 56*e =0")
-print("Resultado4:", resultado4(0))
-print("Resultado" ,resultado4)

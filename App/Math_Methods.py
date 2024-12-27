@@ -37,7 +37,7 @@ class MathMethods:
                 l_coordinate = values[0]
                 x_prev = l_coordinate[0] - h
                 y_prev = l_coordinate[1] - h * self.__get_lambda_eval(l_coordinate)
-                if np.isnan(y_prev):
+                if np.isnan(y_prev) or y_prev >= float('inf'):
                     isnan = (True, isnan[1])
                 else:
                     values.insert(0,(x_prev, y_prev))
@@ -46,7 +46,7 @@ class MathMethods:
                 r_coordinate = values[len(values) - 1]
                 x_next = r_coordinate[0] + h
                 y_next = r_coordinate[1] + h * self.__get_lambda_eval(r_coordinate)
-                if np.isnan(y_next):
+                if np.isnan(y_next) or y_next >= float('inf'):
                     isnan = (isnan[0], True)
                 else:
                     values.append((x_next, y_next))

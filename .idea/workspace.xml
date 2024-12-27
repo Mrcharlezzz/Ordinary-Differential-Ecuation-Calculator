@@ -5,8 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7cf41e4c-c704-4e1b-963c-622f721bc0dc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/App/Interpreter/Simple Calculator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ODE-Calculator/Math_Methods.py" beforeDir="false" afterPath="$PROJECT_DIR$/ODE-Calculator/Math_Methods.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Interpreter/Differential.py" beforeDir="false" afterPath="$PROJECT_DIR$/App/Interpreter/Differential.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Interpreter/Function.py" beforeDir="false" afterPath="$PROJECT_DIR$/App/Interpreter/Function.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Interpreter/Simple Calculator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Interpreter/Variable Unknown.py" beforeDir="false" afterPath="$PROJECT_DIR$/App/Interpreter/Variable Unknown.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ODE-Calculator/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ODE-Calculator/.idea/ODE-Calculator.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ODE-Calculator/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ODE-Calculator/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ODE-Calculator/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ODE-Calculator/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ODE-Calculator/Math_Methods.py" beforeDir="false" afterPath="$PROJECT_DIR$/App/Math_Methods.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ODE-Calculator/TestFile.py" beforeDir="false" afterPath="$PROJECT_DIR$/App/TestFile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ODE-Graph Plotter/ODE_Graf.py" beforeDir="false" afterPath="$PROJECT_DIR$/App/ODE_Graf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaz/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaz/prueba.py" beforeDir="false" afterPath="$PROJECT_DIR$/App/Front.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,16 +46,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.Math_Methods.executor&quot;: &quot;Run&quot;,
-    &quot;Python.TestFile.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/izzya/$$$$.__IZZY/_School/Computer Science/3rdSemester/EDO/Project/Ordinary-Differential-Ecuation-Calculator&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.Front.executor": "Run",
+    "Python.Math_Methods.executor": "Run",
+    "Python.TestFile.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.prueba.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/izzya/$$$$.__IZZY/_School/Computer Science/3rdSemester/EDO/Project/Ordinary-Differential-Ecuation-Calculator"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\izzya\$$$$.__IZZY\_School\Computer Science\3rdSemester\EDO\Project\Ordinary-Differential-Ecuation-Calculator\App" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
