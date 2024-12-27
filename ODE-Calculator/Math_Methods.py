@@ -1,3 +1,5 @@
+import math
+
 class MathMethods:
     def __init__(self, x0, y0, f, h, x1):
         self.__n = int(1e4)
@@ -22,17 +24,26 @@ class MathMethods:
         return self.__f_lambda(coordinate[0], coordinate[1])
 
     def __euler_method(self, x0, y0, h):
+        isnan = (False, False)
         values = [(x0, y0)]
         for i in range(self.__n):
-            l_coordinate = values[0]
-            x_prev = l_coordinate[0] - h
-            y_prev = l_coordinate[1] - h * self.__get_lambda_eval(l_coordinate)
-            values.insert(0,(x_prev, float(y_prev)))
+            if not isnan[0]:
+                l_coordinate = values[0]
+                x_prev = l_coordinate[0] - h
+                y_prev = l_coordinate[1] - h * self.__get_lambda_eval(l_coordinate)
+                if math.isnan(y_prev):
+                    isnan = (True, isnan[1])
+                else:
+                    values.insert(0,(x_prev, float(y_prev)))
 
-            r_coordinate = values[len(values) - 1]
-            x_next = r_coordinate[0] + h
-            y_next = r_coordinate[1] + h * self.__get_lambda_eval(r_coordinate)
-            values.append((x_next, float(y_next)))
+            if not isnan[1]:
+                r_coordinate = values[len(values) - 1]
+                x_next = r_coordinate[0] + h
+                y_next = r_coordinate[1] + h * self.__get_lambda_eval(r_coordinate)
+                if math.isnan(y_next):
+                    isnan = (isnan[0], True)
+                else:
+                    values.append((x_next, float(y_next)))
 
         return values
 
