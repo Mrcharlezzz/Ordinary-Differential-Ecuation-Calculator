@@ -6,7 +6,11 @@ class MathMethods:
         self.__n = int(1e4)
         self.__f_lambda = f
         self.__values = self.__euler_method(x0, y0, h)
-        self.__ode_evaluation = (x1, float(self.__get_solution(x1)))
+        y1 = self.__get_solution(x1)
+        if y1 is None:
+            self.__ode_evaluation = (x1, None)
+        else:
+            self.__ode_evaluation = (x1, float(y1))
 
     # Method to get Euler's method values...
     def get_values(self):
@@ -59,6 +63,9 @@ class MathMethods:
 
         if t < rg[0] or t > rg[1]:
             return None
+
+        if len(f) == 1:
+            return f[0][1]
 
         for i in range(len(f) - 1):
             x1 = f[i][0]
