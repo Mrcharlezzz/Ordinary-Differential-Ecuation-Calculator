@@ -1,8 +1,48 @@
 import numpy as np
 import warnings
 
+
+class NumericError:
+    def __init__(self, solution, ini, end):
+        self.__s = solution
+        self.__ini = ini
+        self.__end = end
+
+    def absolute_error(self, y, x):
+        return abs(self.__s(x) - y)
+
+    def relative_error(self, y, x):
+        if self.__s(x) == 0:
+            print("Relative Error Is Not Defined on x=", x)
+            return 0
+        return abs(self.absolute_error(y, x) / self.__s(x))
+
+    def __aux_error(self, evaluation):
+        x = evaluation[0]
+        y = evaluation[1]
+        return self.absolute_error(y, x), self.relative_error(y, x)
+
+    def range_error(self, values):
+        x_vals = []
+        y_vals_a = []
+        y_vals_r = []
+        max_a = (0, 0)
+        max_r = (0, 0)
+
+        for evaluation in values:
+            x = evaluation[0]
+            if self.__ini <= x <= self.__end:
+                x_vals.append(x)
+                absl, rel = self.__aux_error(evaluation)
+                max_a = max(max_a, (absl, x))
+                max_r = max(max_r, (rel, x))
+                y_vals_a.append(absl)
+                y_vals_r.append(rel)
+        return [x_vals, y_vals_a, y_vals_r, max_a, max_r]
+
 class MathMethods:
     def __init__(self, x0, y0, f, h, x1):
+        """Class Builder"""
         self.__n = int(1e4)
         self.__f_lambda = f
         self.__values = self.__euler_method(x0, y0, h)
@@ -11,9 +51,46 @@ class MathMethods:
             self.__ode_evaluation = (x1, None)
         else:
             self.__ode_evaluation = (x1, float(y1))
+        self.numeric_error = []
 
-    # Method to get Euler's method values...
+    def numeric_analysis(self, solution, ini, end):
+        """Numeric Analysis trigger, call this method AFTER build the class, then get results in MathMethods fields"""
+        x = self.get_evaluation()[0]
+        y = self.get_evaluation()[1]
+        numeric_e = NumericError(solution, ini, end)
+        result_return = numeric_e.range_error(self.__values)
+        result_return.append((x, numeric_e.absolute_error(y, x)))
+        result_return.append((x, numeric_e.relative_error(y, x)))
+        self.numeric_error = result_return
+
+    def numeric_get_range_absolute_error(self):
+        """Call AFTER numeric_analysis(), Get x_vals, y_vals to PLOT absolute error in [l, r]"""
+        return self.numeric_error[0], self.numeric_error[1]
+
+    def numeric_get_range_relative_error(self):
+        """Call AFTER numeric_analysis(), Get x_vals, y_vals to PLOT relative error in [l, r]"""
+        return self.numeric_error[0], self.numeric_error[2]
+
+    def numeric_get_range_max_absolute_error(self):
+        """Call AFTER numeric_analysis(), Get (x, max_absolute_error) in [l, r] to PLOT and SHOW in window"""
+        to_return = (self.numeric_error[3][1], self.numeric_error[3][0])
+        return  to_return
+
+    def numeric_get_range_max_relative_error(self):
+        """Call AFTER numeric_analysis(), Get (x, max_relative_error) in [l, r] to PLOT and SHOW in window"""
+        to_return = (self.numeric_error[4][1], self.numeric_error[4][0])
+        return to_return
+
+    def numeric_get_specific_absolute_error(self):
+        """Call AFTER numeric_analysis(), Get (x, specific_absolute_error) in f(x1) to PLOT and SHOW in window"""
+        return  self.numeric_error[5]
+
+    def numeric_get_specific_relative_error(self):
+        """Call AFTER numeric_analysis(), Get (x, specific_relative_error) in f(x1) to PLOT and SHOW in window"""
+        return  self.numeric_error[6]
+
     def get_values(self):
+        """Method to get Euler's method values..."""
         x_values = []
         y_values = []
         for plot in self.__values:
@@ -21,8 +98,8 @@ class MathMethods:
             y_values.append(plot[1])
         return x_values, y_values
 
-    # Method to get the specified evaluation of the equation...
     def get_evaluation(self):
+        """Method to get the specified evaluation of the equation..."""
         return self.__ode_evaluation
 
     def __get_lambda_eval(self, coordinate):
