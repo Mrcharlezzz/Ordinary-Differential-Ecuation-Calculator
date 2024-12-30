@@ -1,10 +1,10 @@
 import numpy as np
 import warnings
 
-
 class NumericError:
-    def __init__(self, solution, ini, end):
+    def __init__(self, solution, derivative, ini, end):
         self.__s = solution
+        self.__d = derivative
         self.__ini = ini
         self.__end = end
 
@@ -17,28 +17,38 @@ class NumericError:
             return 0
         return abs(self.absolute_error(y, x) / self.__s(x))
 
+    def condition(self, x):
+        if self.__s(x) == 0:
+            print("Condition Is Not Defined on x=", x)
+            return 0
+        return abs((x*self.__d(x))/self.__s(x))
+
     def __aux_error(self, evaluation):
         x = evaluation[0]
         y = evaluation[1]
-        return self.absolute_error(y, x), self.relative_error(y, x)
+        return self.absolute_error(y, x), self.relative_error(y, x), self.condition(x)
 
     def range_error(self, values):
         x_vals = []
         y_vals_a = []
         y_vals_r = []
+        y_vals_c = []
         max_a = (0, 0)
         max_r = (0, 0)
+        max_c = (0, 0)
 
         for evaluation in values:
             x = evaluation[0]
             if self.__ini <= x <= self.__end:
                 x_vals.append(x)
-                absl, rel = self.__aux_error(evaluation)
+                absl, rel, cond = self.__aux_error(evaluation)
                 max_a = max(max_a, (absl, x))
                 max_r = max(max_r, (rel, x))
+                max_c = max(max_c, (cond, x))
                 y_vals_a.append(absl)
                 y_vals_r.append(rel)
-        return [x_vals, y_vals_a, y_vals_r, max_a, max_r]
+                y_vals_c.append(cond)
+        return [x_vals, y_vals_a, y_vals_r, max_a, max_r, y_vals_c, max_c]
 
 class MathMethods:
     def __init__(self, x0, y0, f, h, x1):
@@ -53,14 +63,15 @@ class MathMethods:
             self.__ode_evaluation = (x1, float(y1))
         self.numeric_error = []
 
-    def numeric_analysis(self, solution, ini, end):
+    def numeric_analysis(self, solution, derivative, ini, end):
         """Numeric Analysis trigger, call this method AFTER build the class, then get results in MathMethods fields"""
         x = self.get_evaluation()[0]
         y = self.get_evaluation()[1]
-        numeric_e = NumericError(solution, ini, end)
+        numeric_e = NumericError(solution, derivative, ini, end)
         result_return = numeric_e.range_error(self.__values)
         result_return.append((x, numeric_e.absolute_error(y, x)))
         result_return.append((x, numeric_e.relative_error(y, x)))
+        result_return.append((x, numeric_e.condition(x)))
         self.numeric_error = result_return
 
     def numeric_get_range_absolute_error(self):
@@ -70,6 +81,10 @@ class MathMethods:
     def numeric_get_range_relative_error(self):
         """Call AFTER numeric_analysis(), Get x_vals, y_vals to PLOT relative error in [l, r]"""
         return self.numeric_error[0], self.numeric_error[2]
+
+    def numeric_get_range_condition(self):
+        """Call AFTER numeric_analysis(), Get x_vals, y_vals to PLOT condition in [l, r]"""
+        return self.numeric_error[0], self.numeric_error[5]
 
     def numeric_get_range_max_absolute_error(self):
         """Call AFTER numeric_analysis(), Get (x, max_absolute_error) in [l, r] to PLOT and SHOW in window"""
@@ -81,13 +96,22 @@ class MathMethods:
         to_return = (self.numeric_error[4][1], self.numeric_error[4][0])
         return to_return
 
+    def numeric_get_range_max_condition(self):
+        """Call AFTER numeric_analysis(), Get (x, max_condition) in [l, r] to PLOT and SHOW in window"""
+        to_return = (self.numeric_error[6][1], self.numeric_error[6][0])
+        return to_return
+
     def numeric_get_specific_absolute_error(self):
         """Call AFTER numeric_analysis(), Get (x, specific_absolute_error) in f(x1) to PLOT and SHOW in window"""
-        return  self.numeric_error[5]
+        return  self.numeric_error[7]
 
     def numeric_get_specific_relative_error(self):
         """Call AFTER numeric_analysis(), Get (x, specific_relative_error) in f(x1) to PLOT and SHOW in window"""
-        return  self.numeric_error[6]
+        return  self.numeric_error[8]
+
+    def numeric_get_specific_condition(self):
+        """Call AFTER numeric_analysis(), Get (x, specific_condition) in f(x1) to PLOT and SHOW in window"""
+        return  self.numeric_error[9]
 
     def get_values(self):
         """Method to get Euler's method values..."""
