@@ -1,8 +1,11 @@
 import sympy
+import numpy 
 import math
 import re
+from math import sin, cos, tan, log, sqrt,pi
 
-def function(A): #This method receives a string, converts it into a mathematical expression, clears the variable and returns the cleared function
+
+def function(A): #This method receives a string, converts it into a mathematical expression, clears the variable and returns the cleared function and derived function
     try:
         A = A.replace('y', 'Diff')     # Replace y with Diff
         
@@ -31,11 +34,33 @@ def function(A): #This method receives a string, converts it into a mathematical
         else:  #If no terms with Diff, sum all terms
             resultado = sum(v for k, v in coef.items())
         
-        x, y = sympy.symbols('x y')  # Define symbolic variables x and y
+        x = sympy.symbols('x')  # Define symbolic variables x 
         
         def f(x_val):
             return float(resultado.subs(x, x_val))  # Evaluate expression with numerical values
-        return f
+        
+        derivative = sympy.diff(resultado,x)    # Derive the function(deriva la funcion)
+
+        def f_derivative(x_val):      # Evaluate derived expression with numerical values(sustituye x por los valores de x_val)
+            return float(derivative.subs(x,x_val))
+        
+        return f,f_derivative     # Return de function and the derived function(devulve la funcion y su derivada)
     
     except:  #if there is an error return none
         return None
+
+# #Casos Pruebas
+# resultado1 = function("y/6 + x =2")
+# print("Resultado1:", resultado1(11))
+# print(type(resultado1))
+
+
+resultado2, resultado2_derivative = function("y - x**2= 7")
+print("Resultado2:", resultado2(3), resultado2_derivative(3))
+
+# resultado3 = function("dy/dx +5 + 2*x = 5*y")
+# print("Resultado3:", resultado3)
+
+# resultado4 = function("y - 56*e =0")
+# print("Resultado4:", resultado4(0))
+# print("Resultado" ,resultado4)
