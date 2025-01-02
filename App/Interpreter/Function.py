@@ -15,6 +15,9 @@ def function(A): #This method receives a string, converts it into a mathematical
         if re.search(r'\d+e', A) or re.search(r'e\d+', A) or re.search(r'\d+pi', A) or re.search(r'pi\d+', A): 
             return None                                 #Look if there is any number before or after pi or e
         
+        A = A.replace("√", "sqrt")
+        A = A.replace("^", "**")
+        A = A.replace("π", "pi")
         A = A.replace('e', str(math.e))       # Replace e with math.e
         
         izquierda, derecha = A.split('=') # Split equation into two parts
@@ -36,13 +39,11 @@ def function(A): #This method receives a string, converts it into a mathematical
         
         x = sympy.symbols('x')  # Define symbolic variables x 
         
-        def f(x_val):
-            return float(resultado.subs(x, x_val))  # Evaluate expression with numerical values
+        f = sympy.lambdify((x), resultado, 'numpy')
         
         derivative = sympy.diff(resultado,x)    # Derive the function
 
-        def f_derivative(x_val):      # Evaluate derived expression with numerical values
-            return float(derivative.subs(x,x_val))
+        f_derivative = sympy.lambdify((x), derivative, 'numpy')
         
         return f,f_derivative     # Return de function and the derived function
     
