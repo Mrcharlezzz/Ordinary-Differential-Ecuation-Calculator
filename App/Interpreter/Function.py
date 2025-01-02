@@ -1,8 +1,11 @@
 import sympy
+import numpy 
 import math
 import re
+from math import sin, cos, tan, log, sqrt,pi
 
-def function(A): #This method receives a string, converts it into a mathematical expression, clears the variable and returns the cleared function
+
+def function(A): #This method receives a string, converts it into a mathematical expression, clears the variable and returns the cleared function and derived function
     try:
         A = A.replace('y', 'Diff')     # Replace y with Diff
         
@@ -12,6 +15,9 @@ def function(A): #This method receives a string, converts it into a mathematical
         if re.search(r'\d+e', A) or re.search(r'e\d+', A) or re.search(r'\d+pi', A) or re.search(r'pi\d+', A): 
             return None                                 #Look if there is any number before or after pi or e
         
+        A = A.replace("√", "sqrt")
+        A = A.replace("^", "**")
+        A = A.replace("π", "pi")
         A = A.replace('e', str(math.e))       # Replace e with math.e
         
         izquierda, derecha = A.split('=') # Split equation into two parts
@@ -31,11 +37,15 @@ def function(A): #This method receives a string, converts it into a mathematical
         else:  #If no terms with Diff, sum all terms
             resultado = sum(v for k, v in coef.items())
         
-        x, y = sympy.symbols('x y')  # Define symbolic variables x and y
+        x = sympy.symbols('x')  # Define symbolic variables x 
         
-        def f(x_val):
-            return float(resultado.subs(x, x_val))  # Evaluate expression with numerical values
-        return f
+        f = sympy.lambdify((x), resultado, 'numpy')
+        
+        derivative = sympy.diff(resultado,x)    # Derive the function
+
+        f_derivative = sympy.lambdify((x), derivative, 'numpy')
+        
+        return f,f_derivative     # Return de function and the derived function
     
     except:  #if there is an error return none
         return None
