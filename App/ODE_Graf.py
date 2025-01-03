@@ -58,7 +58,7 @@ class DirectionFieldPlotter(Plotter):
         plt.show()
 
 class AbsoluteErrorPlotter(Plotter):
-    def plot(self, x_values, error_values):
+    def plot(self, x_values, error_values, max_absolute_error, specific_absolute_error, f):
 
         fig,ax = plt.subplots(figsize=(8, 8))
         # Add lines for the axes
@@ -70,12 +70,17 @@ class AbsoluteErrorPlotter(Plotter):
         plt.ylabel("Absolute Error")
         plt.title("Absolute Error Plot")
 
+        # Plot the curve points and the points max_absolute_error and (x, specific_absolute_error) in f(x1)
         ax.plot(x_values, error_values, color="red")
+        ax.plot(max_absolute_error[0], max_absolute_error[1], 'ro', label=f"Max Absolute Error of {f} = ({max_absolute_error[0]},{max_absolute_error[1]:.2f})")
+        ax.plot(specific_absolute_error[0], specific_absolute_error[1], 'ro', label=f"Absolute Error of f({specific_absolute_error[0]}) = {specific_absolute_error[1]:.2f}")
+        
         plt.grid(True)
+        ax.legend()
         plt.show()
 
 class RelativeErrorPlotter(Plotter):
-    def plot(self, x_values, error_values):
+    def plot(self, x_values, error_values, max_relative_error, specific_relative_error,f):
         
         fig,ax = plt.subplots(figsize=(8, 8))
         # Add lines for the axes
@@ -87,12 +92,17 @@ class RelativeErrorPlotter(Plotter):
         plt.ylabel("Relative Error")
         plt.title("Relative Error Plot")
 
+        # Plot the curve points and the points max_relative_error and (x, specific_relative_error) in f(x1)
         ax.plot(x_values, error_values, color="orange")
+        ax.plot(max_relative_error[0], max_relative_error[1], 'ro', label=f"Max Relative Error of {f} = ({max_relative_error[0]},{max_relative_error[1]:.2f})")
+        ax.plot(specific_relative_error[0], specific_relative_error[1], 'ro', label=f"Relative Error of f({specific_relative_error[0]}) = {specific_relative_error[1]:.2f}")
+
         plt.grid(True)
+        ax.legend()
         plt.show()
 
 class ConditionPlotter(Plotter):
-    def plot(self, x_values, cond_values):
+    def plot(self, x_values, cond_values, max_condition, specific_condition, f):
         
         fig,ax = plt.subplots(figsize=(8, 8))
         # Add lines for the axes
@@ -104,7 +114,11 @@ class ConditionPlotter(Plotter):
         plt.ylabel("Condition")
         plt.title("Condition Plot")
 
+        # Plot the curve points and the points max_condition and (x, specific_condition) in f(x1)
         ax.plot(x_values, cond_values, color="green")
-        plt.grid(True)
-        plt.show()
+        ax.plot(max_condition[0], max_condition[1], 'ro', label=f"Max Condition of {f} = ({max_condition[0]},{max_condition[1]:.2f})")
+        ax.plot(specific_condition[0], specific_condition[1], 'ro', label=f"Relative Error of f({specific_condition[0]}) = {specific_condition[1]:.2f}")
 
+        plt.grid(True)
+        ax.legend()
+        plt.show()
