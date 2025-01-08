@@ -37,11 +37,11 @@ def function(A): #This method receives a string, converts it into a mathematical
         else:  #If no terms with Diff, sum all terms
             resultado = sum(v for k, v in coef.items())
         
-        x = sympy.symbols('x')  # Define symbolic variables x 
+        x = sympy.symbols('x')   # Define symbolic variables x
         
         f = sympy.lambdify((x), resultado, 'numpy')
         
-        derivative = sympy.diff(resultado,x)    # Derive the function
+        derivative = sympy.diff(resultado,x) # Derive the function
 
         f_derivative = sympy.lambdify((x), derivative, 'numpy')
         
