@@ -5,8 +5,12 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from App.Interpreter.Differential import differential
+from App.Interpreter.Function import function
 from App.Math_Methods import MathMethods
-from App.ODE_Graf import plot_ode
+from App.ODE_Graf import DirectionFieldPlotter
+from App.ODE_Graf import AbsoluteErrorPlotter
+from App.ODE_Graf import RelativeErrorPlotter
+from App.ODE_Graf import ConditionPlotter
 
 def create_calculator():
     root = tk.Tk()
@@ -224,35 +228,118 @@ def create_calculator():
                 print("MathMethods created successfully")
                 solution = calculator.get_evaluation()
                 x_values,y_values = calculator.get_values()
-                plot_ode(equation,x_interval,y_interval,x_values, y_values,x1,solution[1])
+                plotter = DirectionFieldPlotter()
+                plotter.plot(equation,x_interval,y_interval,x_values, y_values,x1,solution[1])
             except Exception as e:
                 print("Error in MathMethods:", str(e))
 
         except Exception as e:
             solution_label.config(text=f"Error: {str(e)}")
     
+    
+
     def error_analysis():
-      try:
-        equationString = main_display.get()
-        equation = differential(equationString)
-        
-        if equation is None:
-            solution_label.config(text="Error: Invalid equation format")
-            return
-            
+        #   Create new window
+        analysis_window = tk.Toplevel()
+        analysis_window.title("Análisis de errores")
+        analysis_window.geometry("400x700")
+        analysis_window.configure(bg="#2C3E50")
+
+        # Create frames for results
+        differential_string = main_display.get()
+        equationString = entries["sol"].get()
+        equat, equationDer = function(equationString)
         x0 = float(entries["x0"].get())
         y0 = float(entries["y0"].get())
         h = float(entries["h"].get())
         x1 = float(entries["calc_x"].get())
-        try:
-            calculator = MathMethods(x0, y0, equation, h, x1)
-            numeric_error = calculator.get_error_analysis()  # You'll need to implement this method in MathMethods!!!!
-            solution_label.config(text=f"Error Analysis:\nLocal Error: {numeric_error['local']}\nGlobal Error: {numeric_error['global']}")
-        except Exception as e:
-            solution_label.config(text=f"Error in analysis: {str(e)}")
-            
-      except Exception as e:
-        solution_label.config(text=f"Error: {str(e)}")
+        ini = float(entries["interval_I"].get())
+        end = float(entries["interval_F"].get())
+       
+        error = MathMethods(x0,y0,differential(differential_string),h,x1)
+        error.numeric_analysis(equat,equationDer,ini,end)
+        texto1= "Max error absoluto:"
+        texto1_1,texto1_2 = error.numeric_get_range_max_absolute_error()
+        
+        result_frame1 = tk.Label(analysis_window, text=f"{texto1} ({texto1_1},{texto1_2})", wraplength=350,
+                            bg="#34495E", fg="white", font=("Arial", 12),
+                            height=3, width=40)
+        result_frame1.pack(pady=10, padx=10)
+        
+        texto2= f"Error absoluto en f({x1}):"
+        texto2_1,texto2_2= error.numeric_get_specific_absolute_error()
+        result_frame2 = tk.Label(analysis_window, text=f"{texto2} ({texto2_1},{texto2_2})", wraplength=350,
+                            bg="#34495E", fg="white", font=("Arial", 12),
+                            height=3, width=40)
+        result_frame2.pack(pady=10, padx=10)
+
+        texto3= "Max error relativo:"
+        texto3_1,texto3_2 = error.numeric_get_range_max_relative_error()
+        result_frame3 = tk.Label(analysis_window, text=f"{texto3} ({texto3_1},{texto3_2})", wraplength=350,
+                            bg="#34495E", fg="white", font=("Arial", 12),
+                            height=3, width=40)
+        result_frame3.pack(pady=10, padx=10)
+
+        texto4= f"Error relativo en f({x1}):"
+        texto4_1,texto4_2= error.numeric_get_specific_relative_error()
+        result_frame4 = tk.Label(analysis_window, text=f"{texto4} ({texto4_1},{texto4_2})", wraplength=350,
+                            bg="#34495E", fg="white", font=("Arial", 12),
+                            height=3, width=40)
+        result_frame4.pack(pady=10, padx=10)
+
+        texto5= "Max condicion:"
+        texto5_1,texto5_2= error.numeric_get_range_max_condition()
+        result_frame5 = tk.Label(analysis_window, text=f"{texto5} ({texto5_1},{texto5_2})", wraplength=350,
+                            bg="#34495E", fg="white", font=("Arial", 12),
+                            height=3, width=40)
+        result_frame5.pack(pady=10, padx=10)
+
+        texto6= f"Error relativo en f({x1}):"
+        texto6_1,texto6_2 = error.numeric_get_specific_condition()
+        result_frame6 = tk.Label(analysis_window, text=f"{texto6} ({texto6_1},{texto6_2})", wraplength=350,
+                            bg="#34495E", fg="white", font=("Arial", 12),
+                            height=3, width=40)
+        result_frame6.pack(pady=10, padx=10)
+
+        # Buttons
+        plot_frame = tk.Frame(analysis_window, bg="#2C3E50")
+        plot_frame.pack(pady=10)
+
+        
+        def AbsolutePlotter():
+           plotter = AbsoluteErrorPlotter()
+           x_values, error_values = error.numeric_get_range_absolute_error()
+           plotter.plot(x_values,error_values,(texto1_1,texto1_2),(texto2_1,texto2_2),equat)
+           
+        def RelativePlotter():
+           plotter = RelativeErrorPlotter()
+           x_values, error_values = error.numeric_get_range_relative_error()
+           plotter.plot(x_values,error_values,(texto3_1,texto3_2),(texto4_1,texto4_2),equat)  
+
+        def ConditionPlot():
+           plotter = ConditionPlotter()
+           x_values, error_values = error.numeric_get_range_condition()
+           plotter.plot(x_values,error_values,(texto5_1,texto5_2),(texto6_1,texto6_2),equat)       
+           
+        plot1_btn = tk.Button(plot_frame, text="PLOT 1", font=("Arial", 12, "bold"),
+                         bg="#27AE60", fg="white", width=10, height=1,command=AbsolutePlotter)
+        plot1_btn.pack(side=tk.LEFT, padx=5)
+
+        plot2_btn = tk.Button(plot_frame, text="PLOT 2", font=("Arial", 12, "bold"),
+                         bg="#2980B9", fg="white", width=10, height=1,command=RelativePlotter)
+        plot2_btn.pack(side=tk.LEFT, padx=5)
+
+        plot3_btn = tk.Button(plot_frame, text="PLOT 3", font=("Arial", 12, "bold"),
+                         bg="#8E44AD", fg="white", width=10, height=1,command=ConditionPlot)
+        plot3_btn.pack(side=tk.LEFT, padx=5)
+
+        close_frame = tk.Frame(analysis_window, bg="#2C3E50")
+        close_frame.pack(pady=10)
+
+        close_btn = tk.Button(close_frame, text="CLOSE", font=("Arial", 12, "bold"),
+                         bg="#E74C3C", fg="white", width=10, height=1,
+                         command=analysis_window.destroy)
+        close_btn.pack()
 
 
     calculate_btn = tk.Button(action_frame, text="CALCULAR", font=("Arial", 12, "bold"),
@@ -278,3 +365,5 @@ def create_calculator():
     
 
     root.mainloop()
+
+create_calculator()    
