@@ -55,12 +55,14 @@ class MathMethods:
         """Class Builder"""
         self.__n = int(1e4)
         self.__f_lambda = f
-        self.__values = self.__euler_method(x0, y0, h)
-        y1 = self.__get_solution(x1)
-        if y1 is None:
-            self.__ode_evaluation = (x1, None)
-        else:
-            self.__ode_evaluation = (x1, float(y1))
+        num_args = f.__code__.co_argcount
+        if num_args == 2:
+            self.__values = self.__euler_method(x0, y0, h)
+            y1 = self.__get_solution(x1)
+            if y1 is None:
+                self.__ode_evaluation = (x1, None)
+            else:
+                self.__ode_evaluation = (x1, float(y1))
         self.numeric_error = []
 
     def numeric_analysis(self, solution, derivative, ini, end):
