@@ -366,4 +366,3 @@ def create_calculator():
 
     root.mainloop()
 
-create_calculator()    
