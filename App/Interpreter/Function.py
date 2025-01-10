@@ -12,12 +12,14 @@ def function(A): #This method receives a string, converts it into a mathematical
         if "dy/dx" in A :   #check if it is an ODE
           return None
         
+        if "y" not in A:            #if the equation is not a f(x) return none
+            return None
+        
         if re.search(r'\d+e', A) or re.search(r'e\d+', A) or re.search(r'\d+pi', A) or re.search(r'pi\d+', A): 
             return None                                 #Look if there is any number before or after pi or e
         
-        A = A.replace("√", "sqrt")
-        A = A.replace("^", "**")
-        A = A.replace("π", "pi")
+        A = A.replace("√", "sqrt")            # Replace √ with sqrt
+        A = A.replace("^", "**")              # Replace ^ with **
         A = A.replace('e', str(math.e))       # Replace e with math.e
         
         izquierda, derecha = A.split('=') # Split equation into two parts
@@ -38,14 +40,17 @@ def function(A): #This method receives a string, converts it into a mathematical
             resultado = sum(v for k, v in coef.items())
         
         x = sympy.symbols('x')   # Define symbolic variables x
+            # Return de function and the derived function
+     
+        def f(x_val):
+            return float(resultado.subs(x, x_val))    # Evaluate expression with numerical values(sustituye x por los valores de x_val)
         
-        f = sympy.lambdify((x), resultado, 'numpy')
-        
-        derivative = sympy.diff(resultado,x) # Derive the function
+        derivative = sympy.diff(resultado,x)    # Derive the function(deriva la funcion)
 
-        f_derivative = sympy.lambdify((x), derivative, 'numpy')
+        def f_derivative(x_val):      # Evaluate derived expression with numerical values(sustituye x por los valores de x_val)
+            return float(derivative.subs(x,x_val))
         
-        return f,f_derivative     # Return de function and the derived function
+        return f,f_derivative     # Return de function and the derived function(devulve la funcion y su derivada)
     
     except:  #if there is an error return none
         return None

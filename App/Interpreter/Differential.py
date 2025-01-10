@@ -6,11 +6,14 @@ import re
 def differential(A): #This method receives a string, converts it into a mathematical expression, clears the variable and returns the cleared function
     try:
         A = A.replace('dy/dx', 'Diff')     # Replace dy/dx with Diff
-        A = A.replace("√", "sqrt")
-        A = A.replace("^", "**")
-        A = A.replace("π", "pi")
+        A = A.replace("√", "sqrt")         # Replace √ with sqrt
+        A = A.replace("^", "**")           # Replace ^ with **
+        
         if re.search(r'\d+e', A) or re.search(r'e\d+', A) or re.search(r'\d+pi', A) or re.search(r'pi\d+', A): 
             return None                                 #Look if there is any number before or after pi or e
+        
+        if "dy/dx" not in A:            #if the equation is not a differential equation return none
+            return None
         
         A = A.replace('e', str(math.e))       # Replace e with math.e
         
@@ -32,7 +35,14 @@ def differential(A): #This method receives a string, converts it into a mathemat
             resultado = sum(v for k, v in coef.items())
         
         x, y = sympy.symbols('x y')  # Define symbolic variables x and y
-        f_lambda = sympy.lambdify((x, y), resultado, 'numpy')
-        return f_lambda
+        
+        def f(x_val, y_val):
+            return float(resultado.subs([(x, x_val), (y, y_val)]))  # Evaluate expression with numerical values
+        
+        return f
+    
     except:  #if there is an error return none
         return None
+    
+
+    
