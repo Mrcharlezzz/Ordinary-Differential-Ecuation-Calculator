@@ -5,15 +5,15 @@ import re
 
 def differential(A): #This method receives a string, converts it into a mathematical expression, clears the variable and returns the cleared function
     try:
+        if "dy/dx" not in A:            #if the equation is not a differential equation return none
+            return None
+        
         A = A.replace('dy/dx', 'Diff')     # Replace dy/dx with Diff
         A = A.replace("√", "sqrt")         # Replace √ with sqrt
         A = A.replace("^", "**")           # Replace ^ with **
         
         if re.search(r'\d+e', A) or re.search(r'e\d+', A) or re.search(r'\d+pi', A) or re.search(r'pi\d+', A): 
             return None                                 #Look if there is any number before or after pi or e
-        
-        if "dy/dx" not in A:            #if the equation is not a differential equation return none
-            return None
         
         A = A.replace('e', str(math.e))       # Replace e with math.e
         

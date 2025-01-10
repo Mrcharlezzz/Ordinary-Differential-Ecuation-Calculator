@@ -7,13 +7,13 @@ from math import sin, cos, tan, log, sqrt,pi
 
 def function(A): #This method receives a string, converts it into a mathematical expression, clears the variable and returns the cleared function and derived function
     try:
+        if "y" not in A:            #if the equation is not a f(x) return none
+            return None
+        
         A = A.replace('y', 'Diff')     # Replace y with Diff
         
         if "dy/dx" in A :   #check if it is an ODE
           return None
-        
-        if "y" not in A:            #if the equation is not a f(x) return none
-            return None
         
         if re.search(r'\d+e', A) or re.search(r'e\d+', A) or re.search(r'\d+pi', A) or re.search(r'pi\d+', A): 
             return None                                 #Look if there is any number before or after pi or e
@@ -54,3 +54,4 @@ def function(A): #This method receives a string, converts it into a mathematical
     
     except:  #if there is an error return none
         return None
+    
