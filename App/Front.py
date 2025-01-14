@@ -319,17 +319,17 @@ def create_calculator():
         def AbsolutePlotter():
            plotter = AbsoluteErrorPlotter()
            x_values, error_values = error.numeric_get_range_absolute_error()
-           plotter.plot(x_values,error_values,(texto1_1,texto1_2),(texto2_1,texto2_2),equat)
+           plotter.plot(x_values,error_values,(texto1_1,texto1_2),(texto2_1,texto2_2),equationString)
            
         def RelativePlotter():
            plotter = RelativeErrorPlotter()
            x_values, error_values = error.numeric_get_range_relative_error()
-           plotter.plot(x_values,error_values,(texto3_1,texto3_2),(texto4_1,texto4_2),equat)  
+           plotter.plot(x_values,error_values,(texto3_1,texto3_2),(texto4_1,texto4_2),equationString)  
 
         def ConditionPlot():
            plotter = ConditionPlotter()
            x_values, error_values = error.numeric_get_range_condition()
-           plotter.plot(x_values,error_values,(texto5_1,texto5_2),(texto6_1,texto6_2),equat)       
+           plotter.plot(x_values,error_values,(texto5_1,texto5_2),(texto6_1,texto6_2),equationString)       
            
         plot1_btn = tk.Button(plot_frame, text="PLOT Absol.", font=("Arial", 12, "bold"),
                          bg="#27AE60", fg="white", width=10, height=1,command=AbsolutePlotter)
