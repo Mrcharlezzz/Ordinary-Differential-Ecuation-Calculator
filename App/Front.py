@@ -256,8 +256,7 @@ def create_calculator():
          solution_label.config(text= f"Error: {str(ve)}")   
 
         except Exception as e:
-         print(f"Error en error_analysis: {e}")
-         solution_label.config(text=f"Error: {str(e)}")
+         solution_label.config(text=f"Error: {e}")
          return
        
         
