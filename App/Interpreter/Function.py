@@ -32,8 +32,8 @@ def function(A): #This method receives a string, converts it into a mathematical
         func = sympy.Symbol('func')       # Define symbolic variable func
         
         coef = ecuacion.collect(func, evaluate=False)   # Group terms with func
-   
-        for term in coef:           #check if the ode is of a degree greater than 1
+            
+        for term in coef:           #check if the function is of a degree greater than 1
             if isinstance(term, sympy.Pow) and term.args[0] == func and term.args[1] != 1:
                 return None
             
