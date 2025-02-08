@@ -10,7 +10,7 @@ def function(A): #This method receives a string, converts it into a mathematical
         if "y" not in A:            #if the equation is not a f(x) return none
             return None
         
-        A = A.replace('y', 'Diff')     # Replace y with Diff
+        A = A.replace('y', 'func')     # Replace y with func
         
         if "dy/dx" in A :   #check if it is an ODE
           return None
@@ -29,19 +29,18 @@ def function(A): #This method receives a string, converts it into a mathematical
         
         ecuacion = izq - der              # Combine into one equation by subtracting right side
         
-        Diff = sympy.Symbol('Diff')       # Define symbolic variable Diff
+        func = sympy.Symbol('func')       # Define symbolic variable func
         
-        coef = ecuacion.collect(Diff, evaluate=False)   # Group terms with Diff
+        coef = ecuacion.collect(func, evaluate=False)   # Group terms with func
    
-        if Diff in coef:   #If there are terms with Diff, reorganize the equation
-            resultado = -sum(v for k, v in coef.items() if k != Diff) / coef[Diff]
-        
-        else:  #If no terms with Diff, sum all terms
-            resultado = sum(v for k, v in coef.items())
+        for term in coef:           #check if the ode is of a degree greater than 1
+            if isinstance(term, sympy.Pow) and term.args[0] == func and term.args[1] != 1:
+                return None
+            
+        resultado = -sum(v for k, v in coef.items() if k != func) / coef[func]  #adds the values ​​that do not have func and divides it by those that have func
         
         x = sympy.symbols('x')   # Define symbolic variables x
-            # Return de function and the derived function
-     
+           
         def f(x_val):
             return float(resultado.subs(x, x_val))    # Evaluate expression with numerical values(sustituye x por los valores de x_val)
         

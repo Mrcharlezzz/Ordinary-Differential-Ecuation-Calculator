@@ -18,7 +18,8 @@ def differential(A): #This method receives a string, converts it into a mathemat
         A = A.replace('e', str(math.e))       # Replace e with math.e
         
         izquierda, derecha = A.split('=') # Split equation into two parts
-        
+        derecha = f'({derecha})'
+         
         izq = sympy.sympify(izquierda)    # Convert left side to symbolic expression
         der = sympy.sympify(derecha)      # Convert right side to symbolic expression
         
@@ -27,12 +28,12 @@ def differential(A): #This method receives a string, converts it into a mathemat
         Diff = sympy.Symbol('Diff')       # Define symbolic variable Diff
         
         coef = ecuacion.collect(Diff, evaluate=False)   # Group terms with Diff
-   
-        if Diff in coef:   #If there are terms with Diff, reorganize the equation
-            resultado = -sum(v for k, v in coef.items() if k != Diff) / coef[Diff]
         
-        else:  #If no terms with Diff, sum all terms
-            resultado = sum(v for k, v in coef.items())
+        for term in coef:           #check if the ode is of a degree greater than 1
+            if isinstance(term, sympy.Pow) and term.args[0] == Diff and term.args[1] != 1:
+                return None
+            
+        resultado = -sum(v for k, v in coef.items() if k != Diff)/ coef[Diff]  #adds the values ​​that do not have diff and divides it by those that have diff
         
         x, y = sympy.symbols('x y')  # Define symbolic variables x and y
         
