@@ -11,8 +11,8 @@ class DirectionFieldPlotter(Plotter):
     def plot(self,ode, x_interval, y_interval, x_values, y_values, x_0, y_0):
 
         # Create a grid of points in the x, y plane
-        x_vals = np.linspace(x_interval[0], x_interval[1], 30)
-        y_vals = np.linspace(y_interval[0], y_interval[1], 30)
+        x_vals = np.linspace(x_interval[0], x_interval[1], 300)
+        y_vals = np.linspace(y_interval[0], y_interval[1], 300)
         X, Y = np.meshgrid(x_vals, y_vals)
         # Vectorize the ODE function to handle NumPy array inputs
         def vectorized_ode(x, y):
@@ -121,4 +121,42 @@ class ConditionPlotter(Plotter):
 
         plt.grid(True)
         ax.legend()
+        plt.show()
+
+class LSPlotter(Plotter):
+    def plot(self, x_interval, y_interval, line, parabole, exact_sol):
+        
+        # Create figure and axes
+        fig, ax = plt.subplots(figsize=(8, 8))
+
+        # Create points for plotting
+        x_vals = np.linspace(x_interval[0], x_interval[1], ((abs(x_interval[0]) + abs(x_interval[1]))*1000))
+
+        # Plot functions
+        ax.plot(x_vals, line(x_vals), color="blue", label="LS Line")
+        ax.plot(x_vals, parabole(x_vals), color="green", label="LS Parabole")
+        ax.plot(x_vals, exact_sol(x_vals), color="red", label="Exact Solution")
+
+        # Configure axes
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_title("Least Square Plot")
+
+        # Set limits
+        ax.set_xlim(x_interval[0], x_interval[1])
+        ax.set_ylim(y_interval[0], y_interval[1])
+
+        # Add axis lines
+        ax.axhline(0, color='black', linewidth=1.5)
+        ax.axvline(0, color='black', linewidth=1.5)
+
+        # Add grid similar to the image
+        ax.set_xticks(np.arange(x_interval[0], x_interval[1] + 1, (abs(x_interval[0]) + abs(x_interval[1]))/20))
+        ax.set_yticks(np.arange(y_interval[0], y_interval[1] + 1, (abs(x_interval[0]) + abs(x_interval[1]))/20))
+        ax.grid(True, which='both', linestyle='-', linewidth=0.5, color='gray', alpha=0.5)
+
+        # Show legend
+        ax.legend()
+
+        # Show plot
         plt.show()

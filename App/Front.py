@@ -27,7 +27,6 @@ def create_calculator():
     y = (screen_height - window_height) // 2
     
     root.geometry(f"{window_width}x{window_height}+{x}+{y}")
-    root.resizable(False, False)  # Prevent window resizing
     root.configure(bg="#2C3E50")
 
     # Variables to store current display
