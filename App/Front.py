@@ -1,11 +1,14 @@
 import tkinter as tk
 import sys
 import os
+import numpy as np
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from App.Interpreter.Differential import differential
 from App.Interpreter.Function import function
+from App.Interpreter.Line import line
+from App.Interpreter.Parabola import parabola
 from App.Math_Methods import MathMethods
 from App.ODE_Graf import DirectionFieldPlotter
 from App.ODE_Graf import AbsoluteErrorPlotter
@@ -192,7 +195,7 @@ def create_calculator():
         h = float(entries["h"].get())
         x1 = float(entries["calc_x"].get())
         try:
-            calculator = MathMethods(x0, y0, equation, h, x1)
+            calculator = MathMethods(1e3,x0, y0, equation, h, x1)
             print("MathMethods created successfully")
             solution = calculator.get_evaluation()
             solution_label.config(text=f"Solución: y({solution[0]}) = {solution[1]}")
@@ -224,7 +227,7 @@ def create_calculator():
             x_interval = [float(entries["interval_I"].get()), float(entries["interval_F"].get())]
             y_interval = [float(entries["interval_I"].get()), float(entries["interval_F"].get())]
             try:
-                calculator = MathMethods(x0, y0, equation, h, x1)
+                calculator = MathMethods(1e3, x0, y0, equation, h, x1)
                 print("MathMethods created successfully")
                 solution = calculator.get_evaluation()
                 x_values,y_values = calculator.get_values()
@@ -249,7 +252,7 @@ def create_calculator():
          x1 = float(entries["calc_x"].get())
          ini = int(entries["interval_I"].get())
          end = int(entries["interval_F"].get())
-         error = MathMethods(x0,y0,differential(differential_string),h,x1)
+         error = MathMethods(1e3 ,x0,y0,differential(differential_string),h,x1)
          error.numeric_analysis(equat,equationDer,ini,end)
         
         except ValueError as ve:
@@ -334,11 +337,16 @@ def create_calculator():
             equatString = main_display.get()
             equation = differential(equatString)
         
-            calculator = MathMethods(x0, y0, equation, h, x1)
-            print("MathMethods created successfully")
-            funcL, funcP = calculator.least_square()
+            calc = MathMethods(16,x0, y0, equation, h, x1)
+            x,y = calc.get_values()
+            X = np.array(x)
+            Y = np.array(y)
+            funct_Line, error_Line = line(X,Y)
+            print(funct_Line(7))
+            funct_parab, error_parab = parabola(X,Y)
+            print(funct_parab(7))
             plotter = LSPlotter()
-            plotter.plot((ini,end),(ini,end), funcL, funcP, equat)
+            plotter.plot((ini,end),(ini,end), funct_Line, funct_parab, equat)
                 
         plot1_btn = tk.Button(plot_frame, text="PLOT Absol.", font=("Arial", 12, "bold"),
                          bg="#228B22", fg="white", width=10, height=1,command=AbsolutePlotter)

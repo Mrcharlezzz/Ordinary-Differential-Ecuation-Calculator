@@ -82,9 +82,9 @@ class NumericError:
         return [x_vals, y_vals_a, y_vals_r, max_a, max_r, y_vals_c, max_c]
 
 class MathMethods:
-    def __init__(self, x0, y0, f, h, x1):
+    def __init__(self, n,x0, y0, f, h, x1):
         """Class Builder"""
-        self.__n = int(1e4)
+        self.__n = int(n)
         self.__f_lambda = f
         num_args = f.__code__.co_argcount
         if num_args == 2:
