@@ -11,8 +11,8 @@ class DirectionFieldPlotter(Plotter):
     def plot(self,ode, x_interval, y_interval, x_values, y_values, x_0, y_0):
 
         # Create a grid of points in the x, y plane
-        x_vals = np.linspace(x_interval[0], x_interval[1], 300)
-        y_vals = np.linspace(y_interval[0], y_interval[1], 300)
+        x_vals = np.linspace(x_interval[0], x_interval[1], 30)
+        y_vals = np.linspace(y_interval[0], y_interval[1], 30)
         X, Y = np.meshgrid(x_vals, y_vals)
         # Vectorize the ODE function to handle NumPy array inputs
         def vectorized_ode(x, y):
