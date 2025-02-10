@@ -1,6 +1,37 @@
 import numpy as np
 import warnings
 
+class LeastSquare:
+    def __init__(self, x0, y0):
+        n = len(x0)
+        x = sum(x0)
+        y = sum(y0)
+        x2 = sum(x ** 2 for x in x0)
+        x3 = sum(x ** 3 for x in x0)
+        x4 = sum(x ** 4 for x in x0)
+        xy = sum(x * y for x, y in zip(x0, y0))
+        x2y = sum(x ** 2 * y for x, y in zip(x0, y0))
+
+        A_line = np.array([[x2, x], [x, n]])  # Create matrices A and B to solve the system of linear equations
+        B_line = np.array([xy, y])
+
+        self.__a_l, self.__b_l = np.linalg.solve(A_line, B_line)  # Solve the system of linear equations to find the coefficients a and b
+
+        A_par = np.array([[x4, x3, x2], [x3, x2, x], [x2, x, n]])  # Create matrices A and B to solve the system of linear equations
+        B_par = np.array([x2y, xy, y])
+
+        self.__a_p, self.__b_p, self.__c_p = np.linalg.solve(A_par, B_par)  # Solve the system of linear equations to find the coefficients a, b, and c
+
+    def __line(self, x):  # Define the line of best fit function
+        return round(self.__a_l, 4) * x + round(self.__b_l, 4)
+
+    def __parabola(self, x):  # Define the parabola of best fit function
+        return round(self.__a_p, 4) * x ** 2 + round(self.__b_p, 4) * x + round(self.__c_p, 4)
+
+    def get_line_and_parabola(self):
+        return self.__line, self.__parabola
+
+
 class NumericError:
     def __init__(self, solution, derivative, ini, end):
         self.__s = solution
@@ -114,6 +145,13 @@ class MathMethods:
     def numeric_get_specific_condition(self):
         """Call AFTER numeric_analysis(), Get (x, specific_condition) in f(x1) to PLOT and SHOW in window"""
         return  self.numeric_error[9]
+
+    def least_square(self):
+        """Method to get least square line and parabola"""
+        x_values, y_values = self.get_values()
+        ls = LeastSquare(x_values, y_values)
+        return ls.get_line_and_parabola()
+
 
     def get_values(self):
         """Method to get Euler's method values..."""
