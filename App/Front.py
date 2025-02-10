@@ -11,6 +11,7 @@ from App.ODE_Graf import DirectionFieldPlotter
 from App.ODE_Graf import AbsoluteErrorPlotter
 from App.ODE_Graf import RelativeErrorPlotter
 from App.ODE_Graf import ConditionPlotter
+from App.ODE_Graf import LSPlotter
 
 def create_calculator():
     root = tk.Tk()
@@ -246,8 +247,8 @@ def create_calculator():
          y0 = float(entries["y0"].get())
          h = float(entries["h"].get())
          x1 = float(entries["calc_x"].get())
-         ini = float(entries["interval_I"].get())
-         end = float(entries["interval_F"].get())
+         ini = int(entries["interval_I"].get())
+         end = int(entries["interval_F"].get())
          error = MathMethods(x0,y0,differential(differential_string),h,x1)
          error.numeric_analysis(equat,equationDer,ini,end)
         
@@ -329,25 +330,40 @@ def create_calculator():
            x_values, error_values = error.numeric_get_range_condition()
            plotter.plot(x_values,error_values,(texto5_1,texto5_2),(texto6_1,texto6_2),equationString)       
            
+        def Least_Squares_Plotter(): 
+            equatString = main_display.get()
+            equation = differential(equatString)
+        
+            calculator = MathMethods(x0, y0, equation, h, x1)
+            print("MathMethods created successfully")
+            funcL, funcP = calculator.least_square()
+            plotter = LSPlotter()
+            plotter.plot((ini,end),(ini,end), funcL, funcP, equat)
+                
         plot1_btn = tk.Button(plot_frame, text="PLOT Absol.", font=("Arial", 12, "bold"),
-                         bg="#27AE60", fg="white", width=10, height=1,command=AbsolutePlotter)
+                         bg="#228B22", fg="white", width=10, height=1,command=AbsolutePlotter)
         plot1_btn.pack(side=tk.LEFT, padx=5)
 
         plot2_btn = tk.Button(plot_frame, text="PLOT Relat", font=("Arial", 12, "bold"),
-                         bg="#2980B9", fg="white", width=10, height=1,command=RelativePlotter)
+                         bg="#00BFFF", fg="white", width=10, height=1,command=RelativePlotter)
         plot2_btn.pack(side=tk.LEFT, padx=5)
 
         plot3_btn = tk.Button(plot_frame, text="PLOT Condit.", font=("Arial", 12, "bold"),
-                         bg="#8E44AD", fg="white", width=10, height=1,command=ConditionPlot)
+                         bg="#9932CC", fg="white", width=10, height=1,command=ConditionPlot)
         plot3_btn.pack(side=tk.LEFT, padx=5)
 
-        close_frame = tk.Frame(analysis_window, bg="#2C3E50")
-        close_frame.pack(pady=10)
+        least_squares_frame = tk.Frame(analysis_window, bg="#2C3E50")
+        least_squares_frame.pack(pady=10)
 
-        close_btn = tk.Button(close_frame, text="CLOSE", font=("Arial", 12, "bold"),
-                         bg="#E74C3C", fg="white", width=10, height=1,
+        least_squares_btn = tk.Button(least_squares_frame, text="LEAST SQUARES", font=("Arial", 12, "bold"),
+                         bg="#FF00FF", fg="white", width=15, height=1,
+                         command=Least_Squares_Plotter)
+        least_squares_btn.pack(side=tk.LEFT, padx=5)
+
+        close_btn = tk.Button(least_squares_frame, text="CLOSE", font=("Arial", 12, "bold"),
+                         bg="#B22222", fg="white", width=15, height=1,
                          command=analysis_window.destroy)
-        close_btn.pack()
+        close_btn.pack(side=tk.LEFT, padx=5)
 
         
 

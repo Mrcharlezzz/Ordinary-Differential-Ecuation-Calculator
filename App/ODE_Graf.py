@@ -133,9 +133,12 @@ class LSPlotter(Plotter):
         x_vals = np.linspace(x_interval[0], x_interval[1], ((abs(x_interval[0]) + abs(x_interval[1]))*1000))
 
         # Plot functions
-        ax.plot(x_vals, line(x_vals), color="blue", label="LS Line")
-        ax.plot(x_vals, parabole(x_vals), color="green", label="LS Parabole")
-        ax.plot(x_vals, exact_sol(x_vals), color="red", label="Exact Solution")
+        exact_sol_vect = np.vectorize(exact_sol)
+        line_vect = np.vectorize(line)
+        parabole_vect = np.vectorize(parabole)
+        ax.plot(x_vals, line_vect(x_vals), color="blue", label="LS Line")
+        ax.plot(x_vals, parabole_vect(x_vals), color="green", label="LS Parabole")
+        ax.plot(x_vals, exact_sol_vect(x_vals), color="red", label="Exact Solution")
 
         # Configure axes
         ax.set_xlabel("x")
